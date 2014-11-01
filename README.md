@@ -1,9 +1,14 @@
-# RoIdea
+# ro-idea
 Enhance intellij idea according my code style, "ro" is my name spelling.
+
+## Getting Started
+see my youtube playlist
+
+## Support
 
 ## Current Features
 ### Actions
-#### Toggle
+#### Toggle (ctrl+shift+alt+p)
 one key switch between src file and test file.
 
 - if focus file is src file
