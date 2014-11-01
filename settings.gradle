@@ -1,0 +1,2 @@
+include ":ro"
+project(':ro').projectDir =  new File(settingsDir, "../ro")

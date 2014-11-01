@@ -1,0 +1,82 @@
+def ideaDir = "/home/roroco/Downloads/idea-IU-135.1230/"
+def outLib = file("${buildDir}/output/lib")
+
+apply plugin: "idea"
+
+idea {
+    module {
+        sourceDirs += file('src')
+
+        testSourceDirs += file('test')
+    }
+}
+
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    compile project(":ro")
+    compile 'org.json:json:20140107'
+    compile 'org.slf4j:slf4j-simple:1.7.7'
+    testCompile 'junit:junit:4.11'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs += 'src'
+        }
+    }
+}
+
+compileJava {
+    classpath = files(
+            classpath,
+            ideaDir + "lib/openapi.jar",
+            ideaDir + "lib/idea.jar",
+            ideaDir + "/lib/util.jar"
+    )
+}
+
+
+task roJar(type: Jar, dependsOn: [buildDependents, compileJava]) {
+    manifest {
+        attributes(
+                "Manifest-Version": "1.0",
+                "Created-By": "IntelliJ IDEA"
+        )
+    }
+
+    archiveName = "${project.name}.jar"
+
+    into("META-INF") {
+        from "${project.rootDir}/META-INF/plugin.xml"
+    }
+
+    destinationDir = outLib
+}
+
+
+task copyDepsToLib(type: Copy) {
+    from configurations.runtime
+    destinationDir = outLib
+}
+
+task roZip(type: Zip, dependsOn: [roJar, copyDepsToLib]) {
+    def lib = "${project.name}/lib"
+
+    into("${lib}/${project.name}") {
+        from sourceSets.main.output
+    }
+
+    into(lib) {
+        from(outLib)
+    }
+
+    destinationDir = project.rootDir
+}
+
