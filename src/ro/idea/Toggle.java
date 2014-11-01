@@ -1,11 +1,13 @@
 package ro.idea;
 
+import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.testIntegration.GotoTestOrCodeAction;
@@ -18,7 +20,10 @@ import static ro.helper.Kernel.*;
  */
 
 public class Toggle extends AnAction {
+    AnActionEvent e;
+
     public void actionPerformed(AnActionEvent e) {
+        this.e = e;
         Str cur = CurPath();
         String path;
 
@@ -47,9 +52,10 @@ public class Toggle extends AnAction {
     }
 
     private FileEditorManager em() {
-        Project pj = ProjectManager.getInstance().getOpenProjects()[0];
+        Project pj = e.getProject();
         return FileEditorManager.getInstance(pj);
     }
+
 
     public void open(String path) {
         VirtualFile f = LocalFileSystem.getInstance().findFileByIoFile(new java.io.File(path));
