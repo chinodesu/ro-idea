@@ -1,10 +1,7 @@
 package ro.idea;
 
-import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
@@ -22,33 +19,83 @@ import static ro.helper.Kernel.*;
 public class Toggle extends AnAction {
     AnActionEvent e;
 
+    Str curPath = null;
+
     public void actionPerformed(AnActionEvent e) {
         this.e = e;
-        Str cur = CurPath();
-        String path;
+        Str cur = getCurPath();
+        String path = "";
 
-        if (allTrue(cur.match("Test\\.java"))) {
-            path = cur.gsub("/test/", "/src/")
-                    .gsub("Test\\.java", "\\.java")
-                    .toString();
+        if (all(cur.match("\\.java$"))) {
+            if (isAd()) {
+                path = toggle("/main/java", "androidTest/java/");
+            } else {
+                path = toggle("/src/", "/test/");
+            }
         } else {
-            path = cur.gsub("/src/", "/test/")
-                    .gsub("/main/", "/test/")
-                    .gsub("\\.java$", "Test\\.java")
-                    .toString();
+            doOld();
+            return;
         }
 
         if (file(path).exist()) {
             open(path);
         } else {
-            new GotoTestOrCodeAction().actionPerformed(e);
+            createNewTest();
         }
     }
 
-    private Str CurPath() {
-        FileEditor ed = em().getSelectedEditors()[0];
-        return str(ed.toString()).gsub("^Editor\\: file\\:\\/\\/", "");
+    public String toggle(String libDir, String testDir) {
+        Str cur = getCurPath();
+        String path;
 
+        if (all(cur.match("Test\\.java$"))) {
+            path = cur.gsub(testDir, libDir)
+                    .gsub("Test\\.java", "\\.java")
+                    .toString();
+
+        } else {
+            path = cur.gsub(libDir, testDir)
+                    .gsub("\\.java$", "Test\\.java")
+                    .toString();
+        }
+        return path;
+    }
+
+    public boolean isAd() {
+        Str cp = getCurPath();
+        if (all(cp.match("/app/"))) {
+            Str appDir = cp.gsub("/app/.*$", "/app/");
+            if (all(appDir)) {
+                return appDir.join("androidTest").exist();
+            }
+        }
+
+        return false;
+    }
+
+
+    private void doOld() {
+        new GotoTestOrCodeAction().actionPerformed(e);
+    }
+
+    public void createNewTest() {
+        new GotoTestOrCodeAction().actionPerformed(e);
+    }
+
+    private Str getCurPath() {
+        if (curPath == null) {
+            FileEditor ed = em().getSelectedEditors()[0];
+            curPath = str(ed.toString()).gsub("^Editor\\: file\\:\\/\\/", "");
+        }
+        return curPath;
+    }
+
+    public void setCurPath(String path) {
+        curPath = new Str(path);
+    }
+
+    public void delCurPath() {
+        curPath = null;
     }
 
     private FileEditorManager em() {

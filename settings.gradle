@@ -1,2 +1,2 @@
 include ":ro"
-project(':ro').projectDir =  new File(settingsDir, "../ro")
+project(':ro').projectDir = file("../ro")

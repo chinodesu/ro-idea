@@ -2,9 +2,19 @@
 Enhance intellij idea according my code style, "ro" is my name spelling.
 
 ## Getting Started
-see my youtube playlist
+see [my youtube playlist]()
 
 ## Support
+
+## Installation
+### way: 
+
+idea window > File > Settings > Plugins > Browser repositories > search "ro-idea"
+
+### way2:
+git clone this/repo.git
+gradle roZip
+idea window > File > Settings > Plugins > install from disk
 
 ## Current Features
 ### Actions
@@ -18,4 +28,10 @@ one key switch between src file and test file.
  - if exist, navigate to testfile
  
 - if focus file is test file, return relative src file
+
+## Q&A
+
+what is "ro"? ro is my name spelling.
+
+
 
