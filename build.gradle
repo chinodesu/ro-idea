@@ -1,15 +1,20 @@
-def ideaDir = "/home/roroco/Downloads/idea-IU-135.1230/"
-def outLib = file("${buildDir}/output/lib")
-
-apply plugin: "idea"
-
-idea {
-    module {
-        sourceDirs += file('src')
-
-        testSourceDirs += file('test')
+def buildPath(ini, ... args) {
+    File finPath = new File(ini)
+    for (arg in args) {
+        finPath = new File(finPath, arg)
     }
+    finPath
 }
+
+def ideaDir(... args) {
+    buildPath("/home/roroco/Downloads/idea-IU-139.224.1/", args)
+}
+
+def outLib(... args) {
+    buildPath("${buildDir}/output/lib", args)
+}
+
+//apply plugin: "idea"
 
 apply plugin: 'java'
 
@@ -17,32 +22,27 @@ repositories {
     mavenCentral()
 }
 
-
 dependencies {
     compile project(":ro")
     compile 'org.json:json:20140107'
-    compile 'org.slf4j:slf4j-simple:1.7.7'
     testCompile 'junit:junit:4.11'
+    testCompile files(ideaDir('lib/openapi.jar'),
+            ideaDir("lib/util.jar"))
 }
 
-sourceSets {
-    main {
-        java {
-            srcDirs += 'src'
-        }
-    }
-}
 
+task roTest(type: Test) {
+    testSrcDirs += files("src/test/java")
+}
 
 compileJava {
     classpath = files(
             classpath,
-            ideaDir + "lib/openapi.jar",
-            ideaDir + "lib/idea.jar",
-            ideaDir + "/lib/util.jar"
+            ideaDir("lib/openapi.jar"),
+            ideaDir("lib/idea.jar"),
+            ideaDir("/lib/util.jar")
     )
 }
-
 
 task roJar(type: Jar, dependsOn: [buildDependents, compileJava]) {
     manifest {
@@ -58,26 +58,33 @@ task roJar(type: Jar, dependsOn: [buildDependents, compileJava]) {
         from "${project.rootDir}/META-INF/plugin.xml"
     }
 
-    destinationDir = outLib
+    destinationDir = outLib()
 }
-
 
 task copyDepsToLib(type: Copy) {
     from configurations.runtime
-    destinationDir = outLib
+    destinationDir = outLib()
+}
+
+def lib(... args) {
+    buildPath "${project.name}/lib", args
 }
 
 task roZip(type: Zip, dependsOn: [roJar, copyDepsToLib]) {
-    def lib = "${project.name}/lib"
-
-    into("${lib}/${project.name}") {
+    into(lib(project.name)) {
         from sourceSets.main.output
     }
 
-    into(lib) {
-        from(outLib)
+    into(lib()) {
+        from(outLib())
     }
-
     destinationDir = project.rootDir
 }
 
+//task backup(type: Copy) {
+//    from "va copyTo${project.name}.zip"
+//    into "${project.name}.zip.backup"
+//}
+
+task release(dependsOn: [roZip]) {
+}

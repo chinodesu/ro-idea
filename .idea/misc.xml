@@ -7,6 +7,7 @@
     <entry_points version="2.0" />
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/../ro" />
     <file type="web" url="file://$PROJECT_DIR$" />
   </component>
   <component name="IdProvider" IDEtalkID="F87E0555BEB8FB996338F43289BC067C" />
@@ -27,4 +28,3 @@
     <list size="0" />
   </component>
 </project>
-

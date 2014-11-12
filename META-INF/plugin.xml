@@ -43,7 +43,19 @@ one key navigate to test file without "create new test" dialog
 
         <action id="Toggle" class="ro.idea.Toggle" text="Toggle" description="toggle btw src and test">
             <add-to-group group-id="RoIdea" anchor="first"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt T"/>
+        </action>
+        <action id="TryAct" class="ro.idea.TryAct" text="TryAct">
+            <add-to-group group-id="RoIdea" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt P"/>
+        </action>
+        <action id="RestartDebugConsole" class="ro.idea.RestartDebugConsole" text="RestartDebugConsole">
+            <add-to-group group-id="RoIdea" anchor="first"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl I"/>
+        </action>
+        <action id="RestartRunConsole" class="ro.idea.RestartRunConsole" text="RestartRunConsole">
+            <add-to-group group-id="RoIdea" anchor="first"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="alt C"/>
         </action>
     </actions>
 
