@@ -1,1 +1,0 @@
--Xms128m -Xmx2000m -XX:MaxPermSize=1000m -XX:ReservedCodeCacheSize=500m -ea -Dsun.io.useCanonCaches=false -Djava.net.preferIPv4Stack=true -Djsse.enableSNIExtension=false -XX:+UseCodeCacheFlushing -XX:+UseConcMarkSweepGC -XX:SoftRefLRUPolicyMSPerMB=50 -Dawt.useSystemAAFontSettings=lcd

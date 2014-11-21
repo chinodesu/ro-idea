@@ -1,5 +1,26 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        flatDir {
+            dirs("../ro/build/libs")
+            dirs("../ro-gd/build/libs")
+        }
+    }
+
+    dependencies {
+        classpath 'com.google.guava:guava:18.0'
+        classpath "ro:ro:1.0"
+        classpath "ro-gd:ro-gd:1.0"
+    }
+}
+
+apply plugin: 'ro-gd'
+apply plugin: 'java'
+
+
 def buildPath(ini, ... args) {
     File finPath = new File(ini)
+
     for (arg in args) {
         finPath = new File(finPath, arg)
     }
@@ -14,10 +35,6 @@ def outLib(... args) {
     buildPath("${buildDir}/output/lib", args)
 }
 
-//apply plugin: "idea"
-
-apply plugin: 'java'
-
 repositories {
     mavenCentral()
 }
@@ -30,11 +47,6 @@ dependencies {
             ideaDir("lib/util.jar"))
 }
 
-
-task roTest(type: Test) {
-    testSrcDirs += files("src/test/java")
-}
-
 compileJava {
     classpath = files(
             classpath,
@@ -43,7 +55,7 @@ compileJava {
             ideaDir("/lib/util.jar")
     )
 }
-
+//
 task roJar(type: Jar, dependsOn: [buildDependents, compileJava]) {
     manifest {
         attributes(
@@ -61,7 +73,7 @@ task roJar(type: Jar, dependsOn: [buildDependents, compileJava]) {
     destinationDir = outLib()
 }
 
-task copyDepsToLib(type: Copy) {
+task cpDepsToLib(type: Copy) {
     from configurations.runtime
     destinationDir = outLib()
 }
@@ -70,7 +82,7 @@ def lib(... args) {
     buildPath "${project.name}/lib", args
 }
 
-task roZip(type: Zip, dependsOn: [roJar, copyDepsToLib]) {
+task roZip(type: Zip, dependsOn: [roJar, cpDepsToLib]) {
     into(lib(project.name)) {
         from sourceSets.main.output
     }
@@ -81,10 +93,10 @@ task roZip(type: Zip, dependsOn: [roJar, copyDepsToLib]) {
     destinationDir = project.rootDir
 }
 
-//task backup(type: Copy) {
-//    from "va copyTo${project.name}.zip"
-//    into "${project.name}.zip.backup"
-//}
+task toClip(type: ro.gd.Task) {
+    util.toClip(pj.root(pj.name + ".zip"))
+}
 
-task release(dependsOn: [roZip]) {
+task release(dependsOn: [roZip, toClip]) {
+
 }
