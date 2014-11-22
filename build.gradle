@@ -28,7 +28,7 @@ def buildPath(ini, ... args) {
 }
 
 def ideaDir(... args) {
-    buildPath("/home/roroco/Downloads/idea-IU-139.224.1/", args)
+    buildPath("/home/roroco/Downloads/idea-IU-135.1230/", args)
 }
 
 def outLib(... args) {

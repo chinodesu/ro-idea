@@ -60,5 +60,9 @@ one key navigate to test file without "create new test" dialog
         </action>
 
         <action id="ToTestExample" class="ro.idea.ToTestSuite" text="To Test Suit"/>
+        <action id="TryAct2" class="ro.idea.TryAct2" text="TryAct2" description="TryAct2">
+            <add-to-group group-id="RoIdea" anchor="first"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt P"/>
+        </action>
     </actions>
 </idea-plugin>
