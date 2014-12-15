@@ -1,6 +1,12 @@
 # ro-idea
 Enhance intellij idea according my code style, "ro" is my name spelling.
 
+## troubleshoots
+
+Compilation failed; see the compiler error output for details
+
+- please redefine ideaDir in build.gradle to right path
+
 ## Getting Started
 see [my youtube playlist]()
 

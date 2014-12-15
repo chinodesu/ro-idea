@@ -4,13 +4,19 @@ import com.intellij.execution.*;
 import com.intellij.execution.executors.DefaultRunExecutor;
 import com.intellij.execution.impl.RunManagerImpl;
 import com.intellij.execution.ui.RunContentDescriptor;
+import com.intellij.ide.actions.NextTabAction;
+import com.intellij.ide.actions.PreviousTabAction;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
+import com.intellij.openapi.wm.impl.ToolWindowHeadlessManagerImpl;
 import com.intellij.ui.content.Content;
+import com.intellij.ui.content.ContentManager;
+import ro.Time;
 
 import java.util.Collection;
 import java.util.List;
@@ -20,41 +26,33 @@ import java.util.List;
  */
 public class TryAct2 extends AnAction {
     public void actionPerformed(AnActionEvent e) {
-        Project project = e.getProject();
-        if (project == null) {
-            return;
+        ToolWindow dbg = ToolWindowManager.getInstance(e.getProject()).getToolWindow("Debug");
+        dbg.activate(null, true, true);
+
+        int n = 0;
+
+        while (true) {
+
+            if (dbg.isActive()) {
+                break;
+            }
+            try {
+                Thread.sleep((long) 1000);
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
+            if (n > 5) {
+                throw new RuntimeException("Timeout");
+            }
+            n++;
         }
 
-        ToolWindow window = ToolWindowManager.getInstance(project).getToolWindow("Debug");
-        if (window == null) {
-            return;
-        }
-
-        final Content content = window.getContentManager().getContents()[0];
-
-        final RunManagerImpl runManager = (RunManagerImpl) RunManager.getInstance(project);
-        final Collection<RunnerAndConfigurationSettings> allConfigurations = runManager.getSortedConfigurations();
-
-        for (RunnerAndConfigurationSettings runConfiguration : allConfigurations) {
-            System.out.println(runConfiguration.getName());
-
-            ExecutionManager executionManager = ExecutionManager.getInstance(project);
-
-            RunContentDescriptor descriptor = content.getUserData(new Key<RunContentDescriptor>("Descriptor"));
-            RunnerAndConfigurationSettings configurationByName = runManager.findConfigurationByName(runConfiguration.getName());
-            if (configurationByName == null) {
-                continue;
-            }
-
-            List<ExecutionTarget> targets = ExecutionTargetManager.getTargetsFor(project, configurationByName);
-
-            for (ExecutionTarget target : targets) {
-                executionManager.restartRunProfile(project,
-                        DefaultRunExecutor.getRunExecutorInstance(),
-                        target,
-                        configurationByName,
-                        (RunContentDescriptor) null);
-            }
+        ContentManager cm = (ContentManager) PlatformDataKeys.NONEMPTY_CONTENT_MANAGER.getData(e.getDataContext());
+        Content sc = cm.getSelectedContent();
+        if (sc.getTabName().equals("Console")) {
+            new NextTabAction().actionPerformed(e);
+        } else {
+            new PreviousTabAction().actionPerformed(e);
         }
     }
 }

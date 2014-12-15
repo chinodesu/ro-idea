@@ -15,10 +15,10 @@ import static ro.helper.Kernel.*;
  */
 
 public class ToTestSuite extends Act {
-    Toggle t;
+    ToggleFile t;
 
     public void actionPerformed(AnActionEvent e) {
-        t = new Toggle();
+        t = new ToggleFile();
         String lib = curPath().toString();
         int lineno = curLineno();
         String test = t.toggle();

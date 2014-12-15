@@ -16,7 +16,7 @@ one key navigate to test file without "create new test" dialog
     </change-notes>
 
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-    <idea-version since-build="131"/>
+    <idea-version since-build="139"/>
 
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
          on how to target different products -->
@@ -45,7 +45,7 @@ one key navigate to test file without "create new test" dialog
             <add-to-group group-id="RoIdea" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt P"/>
         </action>
-        <action id="RestartDebugConsole" class="ro.idea.RestartDebugConsole" text="Restart Debug Console">
+        <action id="RestartDbgConsole" class="ro.idea.RestartDbgConsole" text="Restart Debug Console">
             <add-to-group group-id="RoIdea" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl I"/>
         </action>
@@ -54,15 +54,29 @@ one key navigate to test file without "create new test" dialog
             <keyboard-shortcut keymap="$default" first-keystroke="alt C"/>
         </action>
 
-        <action id="ToggleFile" class="ro.idea.Toggle" text="Toggle File">
+        <action id="ToggleFile" class="ro.idea.ToggleFile" text="Toggle File">
             <add-to-group group-id="RoIdea" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl T"/>
         </action>
-
-        <action id="ToTestExample" class="ro.idea.ToTestSuite" text="To Test Suit"/>
-        <action id="TryAct2" class="ro.idea.TryAct2" text="TryAct2" description="TryAct2">
+        <action id="TryAct2" class="ro.idea.TryAct2" text="Try Act 2" description="">
             <add-to-group group-id="RoIdea" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt P"/>
+        </action>
+        <action id="ToggleDbgTab-ActivateDbg" class="ro.idea.toggleDbgTab.ActivateDbg" text="Toggle Dbg Tab - Activate Dbg">
+            <add-to-group group-id="RoIdea" anchor="first"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt R"/>
+        </action>
+        <action id="ToggleDbgTab-ToggleTab" class="ro.idea.toggleDbgTab.ToggleTab" text="Toggle Dbg Tab - Toggle Tab">
+            <add-to-group group-id="RoIdea" anchor="first"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt T"/>
+        </action>
+        <action id="ToggleDbg" class="ro.idea.ToggleDbg" text="Toggle Dbg">
+            <add-to-group group-id="RoIdea" anchor="first"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="alt T"/>
+        </action>
+        <action id="ToggleRun" class="ro.idea.ToggleRun" text="Toggle Run">
+            <add-to-group group-id="RoIdea" anchor="first"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="alt G"/>
         </action>
     </actions>
 </idea-plugin>

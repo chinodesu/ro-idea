@@ -1,22 +1,20 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        flatDir {
-            dirs("../ro/build/libs")
-            dirs("../ro-gd/build/libs")
-        }
-    }
+//buildscript {
+//    repositories {
+//        mavenCentral()
+//        flatDir {
+//            dirs("../ro/build/libs")
+//            dirs("../ro-gd/build/libs")
+//        }
+//    }
+//
+//    dependencies {
+//        classpath 'com.google.guava:guava:18.0'
+//        classpath "ro:ro:1.0"
+//        classpath "ro-gd:ro-gd:1.0"
+//    }
+//}
 
-    dependencies {
-        classpath 'com.google.guava:guava:18.0'
-        classpath "ro:ro:1.0"
-        classpath "ro-gd:ro-gd:1.0"
-    }
-}
-
-apply plugin: 'ro-gd'
 apply plugin: 'java'
-
 
 def buildPath(ini, ... args) {
     File finPath = new File(ini)
@@ -28,11 +26,15 @@ def buildPath(ini, ... args) {
 }
 
 def ideaDir(... args) {
-    buildPath("/home/roroco/Downloads/idea-IU-135.1230/", args)
+    buildPath("/home/roroco/Downloads/idea-IU-139.224.1/", args)
 }
 
 def outLib(... args) {
     buildPath("${buildDir}/output/lib", args)
+}
+
+def lib(... args) {
+    buildPath "${project.name}/lib", args
 }
 
 repositories {
@@ -55,6 +57,7 @@ compileJava {
             ideaDir("/lib/util.jar")
     )
 }
+
 //
 task roJar(type: Jar, dependsOn: [buildDependents, compileJava]) {
     manifest {
@@ -73,16 +76,13 @@ task roJar(type: Jar, dependsOn: [buildDependents, compileJava]) {
     destinationDir = outLib()
 }
 
-task cpDepsToLib(type: Copy) {
+task DepsToLib(type: Copy) {
     from configurations.runtime
     destinationDir = outLib()
 }
 
-def lib(... args) {
-    buildPath "${project.name}/lib", args
-}
 
-task roZip(type: Zip, dependsOn: [roJar, cpDepsToLib]) {
+task roZip(type: Zip, dependsOn: [roJar, DepsToLib]) {
     into(lib(project.name)) {
         from sourceSets.main.output
     }
@@ -90,13 +90,15 @@ task roZip(type: Zip, dependsOn: [roJar, cpDepsToLib]) {
     into(lib()) {
         from(outLib())
     }
-    destinationDir = project.rootDir
+    destinationDir = file("${project.rootDir.path}/release")
 }
 
-task toClip(type: ro.gd.Task) {
-    util.toClip(pj.root(pj.name + ".zip"))
-}
+//task toClip(type: ro.gd.Task) {
+//    doLast {
+//        util.toClip(pj.root(pj.name + ".zip"))
+//    }
+//}
 
-task release(dependsOn: [roZip, toClip]) {
+//task release(dependsOn: [roZip]) {
+//}
 
-}
