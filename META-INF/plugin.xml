@@ -5,8 +5,6 @@
     <vendor email="chinococoadesu@gmail.com" url="https://github.com/roroco/ro-idea"></vendor>
 
     <description><![CDATA[
-<b>features:</b>
-one key navigate to test file without "create new test" dialog
     ]]></description>
 
     <change-notes><![CDATA[
@@ -41,15 +39,15 @@ one key navigate to test file without "create new test" dialog
             <add-to-group group-id="MainMenu" anchor="last"/>
         </group>
 
-        <action id="TryAct" class="ro.idea.TryAct" text="Try Act" description="try openapi">
+        <action id="TryAct" class="ro.idea.Try" text="Try Act" description="try openapi">
             <add-to-group group-id="RoIdea" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt P"/>
         </action>
-        <action id="RestartDbgConsole" class="ro.idea.RestartDbgConsole" text="Restart Debug Console">
+        <action id="RstDbgConsole" class="ro.idea.RstDbgConsole" text="Rst Dbg Console">
             <add-to-group group-id="RoIdea" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl I"/>
         </action>
-        <action id="RestartRunConsole" class="ro.idea.RestartRunConsole" text="Restart Run Console">
+        <action id="RstRunConsole" class="ro.idea.RstRunConsole" text="Rst Run Console">
             <add-to-group group-id="RoIdea" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="alt C"/>
         </action>
@@ -62,7 +60,8 @@ one key navigate to test file without "create new test" dialog
             <add-to-group group-id="RoIdea" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt P"/>
         </action>
-        <action id="ToggleDbgTab-ActivateDbg" class="ro.idea.toggleDbgTab.ActivateDbg" text="Toggle Dbg Tab - Activate Dbg">
+        <action id="ToggleDbgTab-ActivateDbg" class="ro.idea.toggleDbgTab.ActivateDbg"
+                text="Toggle Dbg Tab - Activate Dbg">
             <add-to-group group-id="RoIdea" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt R"/>
         </action>
@@ -77,6 +76,24 @@ one key navigate to test file without "create new test" dialog
         <action id="ToggleRun" class="ro.idea.ToggleRun" text="Toggle Run">
             <add-to-group group-id="RoIdea" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="alt G"/>
+        </action>
+        <action id="ActivateCurConsole" class="ro.idea.ActivateCurConsole" text="Activate Cur Console">
+            <add-to-group group-id="RoIdea" anchor="first"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt W"/>
+        </action>
+
+        <action id="KillCurDescriptor" class="ro.idea.KillCurDescriptor" text="Kill Cur Descriptor">
+            <add-to-group group-id="RoIdea" anchor="first"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="shift alt C"/>
+        </action>
+
+        <group id="RoIdeaPy" text="RoIdeaPy" description="">
+            <add-to-group group-id="MainMenu" anchor="last"/>
+        </group>
+
+        <action id="PyToggleFile" class="ro.idea.py.ToggleFile" text="Toggle File">
+            <add-to-group group-id="RoIdeaPy" anchor="first"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="shift alt T"/>
         </action>
     </actions>
 </idea-plugin>

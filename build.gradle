@@ -1,104 +1,109 @@
-//buildscript {
-//    repositories {
-//        mavenCentral()
-//        flatDir {
-//            dirs("../ro/build/libs")
-//            dirs("../ro-gd/build/libs")
-//        }
-//    }
-//
-//    dependencies {
-//        classpath 'com.google.guava:guava:18.0'
-//        classpath "ro:ro:1.0"
-//        classpath "ro-gd:ro-gd:1.0"
-//    }
-//}
+buildscript {
+    repositories {
+        mavenCentral()
+        flatDir {
+            dirs("../ro/build/libs")
+            dirs("../ro-gd/build/libs")
+        }
+    }
 
+    dependencies {
+        classpath "ro:ro:+"
+        classpath "ro-gd:ro-gd:+"
+    }
+}
+
+apply plugin: ro.gd.Plugin
 apply plugin: 'java'
 
-def buildPath(ini, ... args) {
-    File finPath = new File(ini)
-
-    for (arg in args) {
-        finPath = new File(finPath, arg)
-    }
-    finPath
+def path(prefix, args) {
+    kernel.path(prefix, args)
 }
 
 def ideaDir(... args) {
-    buildPath("/home/roroco/Downloads/idea-IU-139.224.1/", args)
-}
-
-def outLib(... args) {
-    buildPath("${buildDir}/output/lib", args)
-}
-
-def lib(... args) {
-    buildPath "${project.name}/lib", args
+    path("~/Downloads/idea-IU-139.1117.1", args)
 }
 
 repositories {
     mavenCentral()
 }
 
+def ideaDeps() {
+    def a = []
+    file(ideaDir('lib')).listFiles().each { f ->
+        if (f =~ /\.jar$/) {
+            a << f
+        }
+    }
+    return a
+}
+
 dependencies {
     compile project(":ro")
-    compile 'org.json:json:20140107'
-    testCompile 'junit:junit:4.11'
-    testCompile files(ideaDir('lib/openapi.jar'),
-            ideaDir("lib/util.jar"))
+    compile 'org.json:json:+'
+    testCompile 'junit:junit:+'
+    testCompile files(ideaDeps())
 }
 
 compileJava {
-    classpath = files(
-            classpath,
-            ideaDir("lib/openapi.jar"),
-            ideaDir("lib/idea.jar"),
-            ideaDir("/lib/util.jar")
-    )
+    classpath = files([classpath] + ideaDeps())
 }
+
+task tryGd << {
+
+}
+
+task release(type: ro.gd.idea.Plugin) << {
+    release()
+}
+
+//task dbg(type: ro.gd.idea.Plugin) << {
+//    dbg()
+//}
+
+//task install(type: ro.gd.idea.Plugin) << {
+//    install()
+//}
+
 
 //
-task roJar(type: Jar, dependsOn: [buildDependents, compileJava]) {
-    manifest {
-        attributes(
-                "Manifest-Version": "1.0",
-                "Created-By": "IntelliJ IDEA"
-        )
-    }
-
-    archiveName = "${project.name}.jar"
-
-    into("META-INF") {
-        from "${project.rootDir}/META-INF/plugin.xml"
-    }
-
-    destinationDir = outLib()
-}
-
-task DepsToLib(type: Copy) {
-    from configurations.runtime
-    destinationDir = outLib()
-}
-
-
-task roZip(type: Zip, dependsOn: [roJar, DepsToLib]) {
-    into(lib(project.name)) {
-        from sourceSets.main.output
-    }
-
-    into(lib()) {
-        from(outLib())
-    }
-    destinationDir = file("${project.rootDir.path}/release")
-}
-
-//task toClip(type: ro.gd.Task) {
-//    doLast {
-//        util.toClip(pj.root(pj.name + ".zip"))
+//task roJar(type: Jar, dependsOn: [buildDependents, compileJava]) {
+//    manifest {
+//        attributes(
+//                "Manifest-Version": "1.0",
+//                "Created-By": "IntelliJ IDEA"
+//        )
 //    }
+//
+//    archiveName = "${project.name}.jar"
+//
+//    into("META-INF") {
+//        from "${project.rootDir}/META-INF/plugin.xml"
+//    }
+//
+//    destinationDir = outLib()
 //}
 
-//task release(dependsOn: [roZip]) {
+//task DepsToLib(type: Copy) {
+//    from configurations.runtime
+//    destinationDir = outLib()
 //}
 
+//task roZip(type: Zip, dependsOn: [roJar, DepsToLib]) {
+//    rb 'zip'
+//    into(lib(project.name)) {
+//        from sourceSets.main.output
+//    }
+//
+//    into(lib()) {
+//        from(outLib())
+//    }
+//
+//    destinationDir = releaseDir()
+//}
+
+
+//
+//task dbg(dependsOn: [roZip]) << {
+//    rb "dbg"
+//}

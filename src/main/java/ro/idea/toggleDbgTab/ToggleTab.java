@@ -4,13 +4,13 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentManager;
-import ro.idea.RunDbgAct;
+import ro.idea.RunDbg;
 
 /**
- * It must cooperate with xdotool
+ * It must cooperate with xdo
  */
 
-public class ToggleTab extends RunDbgAct {
+public class ToggleTab extends RunDbg {
 
     ContentManager cm;
 
@@ -20,9 +20,9 @@ public class ToggleTab extends RunDbgAct {
         this.cm = PlatformDataKeys.NONEMPTY_CONTENT_MANAGER.getData(e.getDataContext());
         if (cm != null) {
             if (curTabName().equals("Console")) {
-                cm.selectPreviousContent();
+                selectCtn("Watches");
             } else {
-                cm.selectNextContent();
+                selectCtn("Console");
             }
         }
     }

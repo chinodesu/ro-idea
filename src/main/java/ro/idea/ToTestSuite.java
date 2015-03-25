@@ -21,7 +21,7 @@ public class ToTestSuite extends Act {
         t = new ToggleFile();
         String lib = curPath().toString();
         int lineno = curLineno();
-        String test = t.toggle();
+        String test = t.togglePath();
         if (t.isLib()) {
             if (all(testMethDeclaration(lib, lineno, test))) {
                 open(test, testMethDeclaration(lib, lineno, test).no());
